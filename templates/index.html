@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PocketBalance AI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap"
+        rel="stylesheet"
+    />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #ffffff;
+            --text: #111111;
+            --muted: #4b5563;
+            --soft-text: #6b7280;
+
+            --primary-purple: #5a189a;
+            --primary-purple-dark: #3c096c;
+            --primary-purple-light: #ede0ff;
+            --accent-indigo: #4361ee;
+            --accent-pink: #d63384;
+            --accent-green: #198754;
+            --accent-amber: #c97a2b;
+
+            --purple-soft: #e9d8fd;
+            --blue-soft: #dbeafe;
+            --green-soft: #dcfce7;
+            --amber-soft: #fdebd3;
+
+            --panel-bg: linear-gradient(180deg, #f4ebff 0%, #e7f0ff 100%);
+            --tag-bg: linear-gradient(90deg, #f3e8ff 0%, #e0ecff 100%);
+            --card: rgba(255, 255, 255, 0.97);
+
+            --border: #d6bcfa;
+            --border-soft: #e7d8ff;
+
+            --shadow: 0 22px 48px rgba(0, 0, 0, 0.14);
+            --shadow-soft: 0 14px 30px rgba(90, 24, 154, 0.10);
+        }
+
+        body {
+            font-family: "Inter", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .shape {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.42;
+            z-index: 0;
+            animation: float 11s ease-in-out infinite;
+            filter: blur(3px);
+            pointer-events: none;
+        }
+
+        .shape-1 {
+            width: 260px;
+            height: 260px;
+            background: var(--purple-soft);
+            top: 4%;
+            left: 4%;
+        }
+
+        .shape-2 {
+            width: 330px;
+            height: 330px;
+            background: var(--blue-soft);
+            right: 4%;
+            top: 14%;
+            animation-delay: 2s;
+        }
+
+        .shape-3 {
+            width: 190px;
+            height: 190px;
+            background: var(--green-soft);
+            left: 10%;
+            bottom: 8%;
+            animation-delay: 4s;
+        }
+
+        .shape-4 {
+            width: 240px;
+            height: 240px;
+            background: var(--amber-soft);
+            right: 10%;
+            bottom: 5%;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-18px) translateX(10px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .hero-card {
+            width: 100%;
+            max-width: 1220px;
+            background: var(--card);
+            border: 1px solid var(--border-soft);
+            border-radius: 32px;
+            box-shadow: var(--shadow);
+            padding: 54px 42px;
+            display: grid;
+            grid-template-columns: 1.08fr 0.92fr;
+            gap: 32px;
+            animation: fadeUp 0.9s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            width: fit-content;
+            padding: 10px 16px;
+            background: var(--tag-bg);
+            border: 1px solid var(--border);
+            color: var(--primary-purple-dark);
+            border-radius: 999px;
+            font-size: 0.92rem;
+            font-weight: 800;
+            margin-bottom: 22px;
+            letter-spacing: 0.2px;
+        }
+
+        h1 {
+            font-family: "Poppins", sans-serif;
+            font-size: 4.1rem;
+            line-height: 1.02;
+            letter-spacing: -1.9px;
+            margin-bottom: 18px;
+            animation: fadeUp 1.1s ease;
+            max-width: 760px;
+        }
+
+        .accent-purple {
+            color: var(--primary-purple);
+        }
+
+        .accent-green {
+            color: var(--accent-indigo);
+        }
+
+        .subtitle,
+        .welcome {
+            font-family: "Inter", Arial, sans-serif;
+            font-size: 1.08rem;
+            line-height: 1.85;
+            color: var(--muted);
+            max-width: 700px;
+        }
+
+        .subtitle {
+            margin-bottom: 14px;
+        }
+
+        .welcome {
+            margin-bottom: 18px;
+        }
+
+        .model-note {
+            display: inline-block;
+            margin-bottom: 28px;
+            padding: 15px 17px;
+            border-radius: 18px;
+            border: 1px solid #cfb3ff;
+            background: linear-gradient(135deg, #f8f1ff 0%, #eef4ff 100%);
+            color: #3f3f46;
+            font-size: 0.96rem;
+            line-height: 1.75;
+            max-width: 720px;
+            box-shadow: 0 10px 24px rgba(90, 24, 154, 0.08);
+        }
+
+        .model-note strong {
+            color: var(--primary-purple);
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 15px 24px;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: 0.98rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-indigo));
+            color: white;
+            box-shadow: 0 14px 28px rgba(90, 24, 154, 0.28);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 18px 32px rgba(90, 24, 154, 0.35);
+        }
+
+        .mini-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 8px;
+        }
+
+        .mini-card {
+            background: linear-gradient(180deg, #ffffff 0%, #faf7ff 100%);
+            border: 1px solid #d4b5ff;
+            border-radius: 20px;
+            padding: 20px;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            box-shadow: 0 14px 28px rgba(90, 24, 154, 0.08);
+        }
+
+        .mini-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 34px rgba(90, 24, 154, 0.14);
+            border-color: var(--primary-purple);
+        }
+
+        .mini-card h3 {
+            font-family: "Poppins", sans-serif;
+            font-size: 1.02rem;
+            margin-bottom: 8px;
+            color: var(--primary-purple-dark);
+        }
+
+        .mini-card p {
+            color: #4b5563;
+            line-height: 1.7;
+            font-size: 0.94rem;
+        }
+
+        .side-panel {
+            background: var(--panel-bg);
+            border: 1px solid #cfb3ff;
+            border-radius: 28px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 14px 34px rgba(90, 24, 154, 0.13);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .side-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0));
+            pointer-events: none;
+        }
+
+        .hero-image-wrapper {
+            width: 100%;
+            border-radius: 30px;
+            overflow: hidden;
+            margin-bottom: 18px;
+            border: 4px solid rgba(90, 24, 154, 0.16);
+            box-shadow: 0 16px 32px rgba(90, 24, 154, 0.12);
+        }
+
+        .hero-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .side-panel h2 {
+            font-family: "Poppins", sans-serif;
+            font-size: 1.55rem;
+            margin-bottom: 12px;
+            color: var(--primary-purple-dark);
+        }
+
+        .side-panel p {
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .stat-stack {
+            display: grid;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid #d6bcfa;
+            border-radius: 18px;
+            padding: 16px;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            box-shadow: 0 10px 24px rgba(90, 24, 154, 0.06);
+        }
+
+        .stat-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 28px rgba(90, 24, 154, 0.12);
+            border-color: var(--primary-purple);
+        }
+
+        .stat-box span {
+            display: block;
+            color: var(--soft-text);
+            font-size: 0.84rem;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .stat-box strong {
+            font-size: 1rem;
+            color: #111827;
+            line-height: 1.5;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .footer p {
+            margin: 0;
+        }
+
+        @media (max-width: 960px) {
+            .hero-card {
+                grid-template-columns: 1fr;
+                padding: 38px 24px;
+            }
+
+            h1 {
+                font-size: 3rem;
+            }
+
+            .mini-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-image {
+                height: 320px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .page {
+                padding: 24px 14px;
+            }
+
+            .hero-card {
+                padding: 28px 18px;
+                border-radius: 24px;
+            }
+
+            h1 {
+                font-size: 2.35rem;
+                letter-spacing: -1.1px;
+            }
+
+            .subtitle,
+            .welcome,
+            .model-note {
+                font-size: 0.96rem;
+            }
+
+            .button-row .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .side-panel {
+                padding: 20px;
+            }
+
+            .hero-image {
+                height: 260px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+
+    <main class="page">
+        <section class="hero-card">
+            <div class="hero-left">
+                <div class="tag">Smart Financial Guidance</div>
+
+                <h1>
+                    PocketBalance <span class="accent-purple">AI</span> for
+                    <span class="accent-green">Smarter Money Decisions</span>
+                </h1>
+
+                <p class="subtitle">
+                    A financial insight experience that goes beyond tracking numbers by interpreting spending behaviour, identifying pressure points, and explaining budget health in a more human, transparent way.
+                </p>
+
+                <p class="welcome">
+                    PocketBalance AI helps users understand where their money goes, compare their spending against an income-based budget model, and receive recommendations that feel practical, explainable, and easier to act on.
+                </p>
+
+                <div class="model-note">
+                    Built around <strong>adaptive budgeting models</strong> such as
+                    <strong>50/30/20</strong> and other income-based frameworks, so users are evaluated against a model that better fits their financial reality.
+                </div>
+
+                <div class="button-row">
+                    <a href="/analyze" class="btn btn-primary">Start Your Analysis</a>
+                </div>
+
+                <div class="mini-grid">
+                    <div class="mini-card">
+                        <h3>Adaptive Budgeting</h3>
+                        <p>Each user is evaluated using an income-specific model instead of applying one fixed rule to everyone.</p>
+                    </div>
+
+                    <div class="mini-card">
+                        <h3>Explainable Insights</h3>
+                        <p>The system surfaces the benchmark behind its recommendations so users can understand the logic, not just the result.</p>
+                    </div>
+
+                    <div class="mini-card">
+                        <h3>Human-Centred Guidance</h3>
+                        <p>Recommendations are designed to feel clearer, more supportive, and less robotic than a typical budgeting tool.</p>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="side-panel">
+                <div class="hero-image-wrapper">
+                    <img src="/static/happy-banker.png" alt="A cheerful woman holding cash, with a piggy bank and savings tools on a table" class="hero-image">
+                </div>
+
+                <div>
+                    <h2>Why PocketBalance AI?</h2>
+                    <p>
+                        Many people do not just need a budgeting tool — they need help understanding what their financial behaviour actually means. PocketBalance AI translates spending into insight, not just totals.
+                    </p>
+                </div>
+
+                <div class="stat-stack">
+                    <div class="stat-box">
+                        <span>Core Purpose</span>
+                        <strong>Financial Health Analysis</strong>
+                    </div>
+                    <div class="stat-box">
+                        <span>Decision Layer</span>
+                        <strong>Needs, Wants, And Savings Interpretation</strong>
+                    </div>
+                    <div class="stat-box">
+                        <span>Experience Goal</span>
+                        <strong>Make Money Conversations Feel Less Intimidating</strong>
+                    </div>
+                </div>
+            </aside>
+        </section>
+    </main>
+    <footer class="footer">
+        <p>© 2026 Zipho Renene • Built with Python, Flask & Data-Driven Logic</p>
+    </footer>
+</body>
+</html>

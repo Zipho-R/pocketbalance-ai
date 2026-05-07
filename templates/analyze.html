@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyze - PocketBalance AI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #ffffff;
+            --text: #111111;
+            --muted: #4b5563;
+            --soft-text: #6b7280;
+
+            --primary-purple: #5a189a;
+            --primary-purple-dark: #3c096c;
+            --accent-indigo: #4361ee;
+
+            --purple-soft: #efe4ff;
+            --green-soft: #dcfce7;
+            --amber-soft: #fdebd3;
+            --blue-soft: #dbeafe;
+
+            --purple-bg: #f7f0ff;
+            --green-bg: #f2fcf6;
+            --card: rgba(255,255,255,0.97);
+
+            --border: #e6d9ff;
+            --shadow: 0 18px 40px rgba(90, 24, 154, 0.12);
+            --shadow-soft: 0 12px 24px rgba(90, 24, 154, 0.08);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            background: white;
+            color: var(--text);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .shape {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.35;
+            z-index: 0;
+            animation: float 10s ease-in-out infinite;
+            filter: blur(3px);
+            pointer-events: none;
+        }
+
+        .shape-1 {
+            width: 240px;
+            height: 240px;
+            background: var(--green-soft);
+            top: 8%;
+            left: 5%;
+        }
+
+        .shape-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--purple-soft);
+            right: 4%;
+            top: 15%;
+            animation-delay: 2s;
+        }
+
+        .shape-3 {
+            width: 180px;
+            height: 180px;
+            background: var(--amber-soft);
+            left: 12%;
+            bottom: 8%;
+            animation-delay: 4s;
+        }
+
+        .shape-4 {
+            width: 220px;
+            height: 220px;
+            background: var(--blue-soft);
+            right: 10%;
+            bottom: 8%;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) translateX(0px); }
+            50% { transform: translateY(-18px) translateX(10px); }
+            100% { transform: translateY(0px) translateX(0px); }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bob {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1180px;
+            margin: 36px auto;
+            padding: 20px;
+        }
+
+        .hero-card {
+            background: var(--card);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            padding: 34px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+            animation: fadeUp 0.8s ease;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 24px;
+            align-items: center;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1 {
+            margin: 0 0 12px 0;
+            font-size: 3rem;
+            line-height: 1.05;
+            letter-spacing: -1px;
+            animation: fadeUp 1s ease;
+        }
+
+        .accent-green {
+            color: var(--accent-indigo);
+        }
+
+        .accent-purple {
+            color: var(--primary-purple);
+        }
+
+        .intro {
+            color: var(--muted);
+            line-height: 1.85;
+            max-width: 720px;
+            font-size: 1.02rem;
+        }
+
+        .money-visual {
+            background: linear-gradient(180deg, var(--purple-bg) 0%, #eef4ff 100%);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 24px;
+            min-height: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .math-main {
+            font-size: 4.6rem;
+            font-weight: 800;
+            color: var(--primary-purple-dark);
+            animation: bob 3s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        .math-small {
+            position: absolute;
+            font-weight: 800;
+            opacity: 0.8;
+            animation: bob 4s ease-in-out infinite;
+        }
+
+        .symbol-1 {
+            top: 22px;
+            left: 24px;
+            font-size: 2rem;
+            color: var(--accent-indigo);
+        }
+
+        .symbol-2 {
+            top: 30px;
+            right: 32px;
+            font-size: 1.8rem;
+            color: var(--primary-purple);
+        }
+
+        .symbol-3 {
+            bottom: 26px;
+            left: 38px;
+            font-size: 2rem;
+            color: #16a34a;
+        }
+
+        .symbol-4 {
+            bottom: 24px;
+            right: 24px;
+            font-size: 1.9rem;
+            color: #c97a2b;
+        }
+
+        .symbol-5 {
+            top: 50%;
+            left: 18%;
+            font-size: 1.5rem;
+            color: #7c3aed;
+        }
+
+        .symbol-6 {
+            top: 50%;
+            right: 18%;
+            font-size: 1.5rem;
+            color: #2563eb;
+        }
+
+        .scenario-bar {
+            background: var(--card);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            padding: 22px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+            animation: fadeUp 0.9s ease;
+        }
+
+        .scenario-title {
+            margin: 0 0 14px 0;
+            font-size: 1.1rem;
+            color: var(--primary-purple-dark);
+        }
+
+        .scenario-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .scenario-btn {
+            border: none;
+            cursor: pointer;
+            padding: 12px 16px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .scenario-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-balanced {
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            color: white;
+            box-shadow: 0 10px 20px rgba(34, 197, 94, 0.18);
+        }
+
+        .btn-wants {
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-indigo));
+            color: white;
+            box-shadow: 0 10px 22px rgba(90, 24, 154, 0.22);
+        }
+
+        .btn-risk {
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+            color: white;
+            box-shadow: 0 10px 22px rgba(217, 119, 6, 0.18);
+        }
+
+        .form-card {
+            background: var(--card);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            padding: 28px;
+            border: 1px solid var(--border);
+            animation: fadeUp 1s ease;
+        }
+
+        form {
+            display: grid;
+            gap: 22px;
+        }
+
+        .step {
+            border-radius: 22px;
+            padding: 22px;
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--primary-purple);
+            background: white;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: 0 6px 18px rgba(90, 24, 154, 0.03);
+        }
+
+        .step:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 28px rgba(90, 24, 154, 0.08);
+        }
+
+        .step.step-income {
+            background: #fcfffc;
+        }
+
+        .step.step-fixed {
+            background: #faf8ff;
+        }
+
+        .step.step-variable {
+            background: #fcf8ff;
+        }
+
+        .step.step-savings {
+            background: #fffaf6;
+        }
+
+        .step-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .step-badge {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+        }
+
+        .badge-green {
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+        }
+
+        .badge-purple {
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-indigo));
+        }
+
+        .badge-amber {
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+        }
+
+        .step-head h2 {
+            margin: 0;
+            font-size: 1.15rem;
+            color: var(--primary-purple-dark);
+        }
+
+        .step-head p {
+            margin: 4px 0 0 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1f2937;
+        }
+
+        input {
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px solid #d7d7dd;
+            font-size: 1rem;
+            background: white;
+            transition: all 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 3px rgba(90, 24, 154, 0.15);
+        }
+
+        .button-row {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding-top: 4px;
+        }
+
+        .btn {
+            text-decoration: none;
+            border: none;
+            padding: 15px 24px;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-indigo));
+            color: white;
+            box-shadow: 0 14px 28px rgba(90, 24, 154, 0.25);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 18px 34px rgba(90, 24, 154, 0.32);
+        }
+
+        .btn-secondary {
+            background: #f3e8ff;
+            color: var(--primary-purple-dark);
+            border: 1px solid #d8b4fe;
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 10px 18px rgba(90, 24, 154, 0.10);
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .footer p {
+            margin: 0;
+        }
+
+        @media (max-width: 900px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2.35rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+
+    <div class="container">
+        <section class="hero-card">
+            <div class="hero-grid">
+                <div>
+                    <h1>
+                        Start Your <span class="accent-purple">Financial</span>
+                        <span class="accent-green">Check-In</span>
+                    </h1>
+                    <p class="intro">
+                        This is more than filling in a form. PocketBalance AI guides users through a financial check-in, helping them understand income, monthly obligations, lifestyle spending, and savings habits before generating a more intelligent financial report.
+                    </p>
+                </div>
+
+                <div class="money-visual">
+                    <div class="math-main">∑</div>
+                    <div class="math-small symbol-1">%</div>
+                    <div class="math-small symbol-2">÷</div>
+                    <div class="math-small symbol-3">+</div>
+                    <div class="math-small symbol-4">R</div>
+                    <div class="math-small symbol-5">π</div>
+                    <div class="math-small symbol-6">≈</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="scenario-bar">
+            <h3 class="scenario-title">Quick Demo Scenarios</h3>
+            <div class="scenario-buttons">
+                <button type="button" class="scenario-btn btn-balanced" onclick="fillBalanced()">Balanced User</button>
+                <button type="button" class="scenario-btn btn-wants" onclick="fillWantsHeavy()">Wants-Heavy User</button>
+                <button type="button" class="scenario-btn btn-risk" onclick="fillOverspending()">Overspending User</button>
+            </div>
+        </section>
+
+        <section class="form-card">
+            <form action="/results" method="POST">
+                <div class="step step-income">
+                    <div class="step-head">
+                        <div class="step-badge badge-green">1</div>
+                        <div>
+                            <h2>Tell Us About Your Income</h2>
+                            <p>Start with the amount that shapes your monthly budget profile.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="field">
+                            <label for="income">Monthly Income (R)</label>
+                            <input type="number" step="0.01" min="0" name="income" id="income" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step step-fixed">
+                    <div class="step-head">
+                        <div class="step-badge badge-purple">2</div>
+                        <div>
+                            <h2>Your Monthly Essentials</h2>
+                            <p>These are the bills and obligations that usually come first.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="field"><label>Rent</label><input type="number" step="0.01" min="0" name="rent" required></div>
+                        <div class="field"><label>Insurance</label><input type="number" step="0.01" min="0" name="insurance" required></div>
+                        <div class="field"><label>Debt Repayments</label><input type="number" step="0.01" min="0" name="debt_repayments" required></div>
+                        <div class="field"><label>Contracts</label><input type="number" step="0.01" min="0" name="contracts" required></div>
+                        <div class="field"><label>Utilities</label><input type="number" step="0.01" min="0" name="utilities" required></div>
+                        <div class="field"><label>Internet</label><input type="number" step="0.01" min="0" name="internet" required></div>
+                    </div>
+                </div>
+
+                <div class="step step-variable">
+                    <div class="step-head">
+                        <div class="step-badge badge-green">3</div>
+                        <div>
+                            <h2>Your Flexible And Lifestyle Spending</h2>
+                            <p>This is where habits, convenience, and enjoyment start to show.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="field"><label>Groceries</label><input type="number" step="0.01" min="0" name="groceries" required></div>
+                        <div class="field"><label>Transport</label><input type="number" step="0.01" min="0" name="transport" required></div>
+                        <div class="field"><label>Lifestyle & Entertainment</label><input type="number" step="0.01" min="0" name="lifestyle" required></div>
+                        <div class="field"><label>Personal Care</label><input type="number" step="0.01" min="0" name="personal_care" required></div>
+                        <div class="field"><label>Airtime/Data</label><input type="number" step="0.01" min="0" name="airtime" required></div>
+                        <div class="field"><label>Other</label><input type="number" step="0.01" min="0" name="other" required></div>
+                    </div>
+                </div>
+
+                <div class="step step-savings">
+                    <div class="step-head">
+                        <div class="step-badge badge-amber">4</div>
+                        <div>
+                            <h2>Your Savings Habits</h2>
+                            <p>Let’s see how much of your money is going toward future stability.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="field"><label>Savings Account</label><input type="number" step="0.01" min="0" name="savings_account" required></div>
+                        <div class="field"><label>Investments</label><input type="number" step="0.01" min="0" name="investments" required></div>
+                    </div>
+                </div>
+
+                <div class="button-row">
+                    <button type="submit" class="btn btn-primary">Generate Financial Report</button>
+                    <a href="/" class="btn btn-secondary">Back Home</a>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <script>
+        function setValue(name, value) {
+            const field = document.querySelector(`[name="${name}"]`);
+            if (field) field.value = value;
+        }
+
+        function fillBalanced() {
+            setValue("income", 25000);
+            setValue("rent", 7000);
+            setValue("insurance", 900);
+            setValue("debt_repayments", 1500);
+            setValue("contracts", 400);
+            setValue("utilities", 1000);
+            setValue("internet", 600);
+            setValue("groceries", 2500);
+            setValue("transport", 1200);
+            setValue("lifestyle", 800);
+            setValue("personal_care", 500);
+            setValue("airtime", 250);
+            setValue("other", 200);
+            setValue("savings_account", 3000);
+            setValue("investments", 2000);
+        }
+
+        function fillWantsHeavy() {
+            setValue("income", 22000);
+            setValue("rent", 6000);
+            setValue("insurance", 900);
+            setValue("debt_repayments", 1200);
+            setValue("contracts", 500);
+            setValue("utilities", 900);
+            setValue("internet", 500);
+            setValue("groceries", 2200);
+            setValue("transport", 1200);
+            setValue("lifestyle", 4000);
+            setValue("personal_care", 800);
+            setValue("airtime", 900);
+            setValue("other", 1200);
+            setValue("savings_account", 1000);
+            setValue("investments", 300);
+        }
+
+        function fillOverspending() {
+            setValue("income", 12000);
+            setValue("rent", 5000);
+            setValue("insurance", 800);
+            setValue("debt_repayments", 1500);
+            setValue("contracts", 600);
+            setValue("utilities", 900);
+            setValue("internet", 500);
+            setValue("groceries", 2500);
+            setValue("transport", 1200);
+            setValue("lifestyle", 2000);
+            setValue("personal_care", 700);
+            setValue("airtime", 400);
+            setValue("other", 600);
+            setValue("savings_account", 200);
+            setValue("investments", 0);
+        }
+    </script>
+    <footer class="footer">
+        <p>© 2026 Zipho Renene • Built with Python, Flask & Data-Driven Logic</p>
+    </footer>
+</body>
+</html>

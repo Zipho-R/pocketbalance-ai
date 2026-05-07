@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - PocketBalance AI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+    * {
+        box-sizing: border-box;
+    }
+
+    :root {
+        --bg: #ffffff;
+        --text: #111111;
+        --muted: #4b5563;
+        --soft-text: #6b7280;
+
+        --primary-purple: #5a189a;
+        --primary-purple-dark: #3c096c;
+        --accent-indigo: #4361ee;
+
+        --green: #16a34a;
+        --green-soft: #eafaf0;
+
+        --amber: #d97706;
+        --amber-soft: #fff4e8;
+
+        --red: #dc2626;
+        --red-soft: #fff1f2;
+
+        --purple-soft: #f4ebff;
+        --purple-bg: #faf5ff;
+        --blue-soft: #eef4ff;
+
+        --card: rgba(255, 255, 255, 0.97);
+        --border: #e7d8ff;
+        --border-strong: #d7b8ff;
+
+        --shadow: 0 18px 40px rgba(90, 24, 154, 0.12);
+        --shadow-soft: 0 10px 24px rgba(90, 24, 154, 0.07);
+        --radius-xl: 28px;
+        --radius-lg: 22px;
+        --radius-md: 16px;
+    }
+
+    body {
+        margin: 0;
+        font-family: 'Inter', Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    .shape {
+        position: fixed;
+        border-radius: 50%;
+        opacity: 0.32;
+        z-index: 0;
+        animation: float 10s ease-in-out infinite;
+        filter: blur(3px);
+        pointer-events: none;
+    }
+
+    .shape-1 {
+        width: 240px;
+        height: 240px;
+        background: #efe4ff;
+        top: 7%;
+        left: 4%;
+    }
+
+    .shape-2 {
+        width: 320px;
+        height: 320px;
+        background: #e4ebff;
+        right: 4%;
+        bottom: 5%;
+        animation-delay: 2s;
+    }
+
+    .shape-3 {
+        width: 170px;
+        height: 170px;
+        background: #fbe8d3;
+        left: 14%;
+        bottom: 16%;
+        animation-delay: 4s;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px) translateX(0px); }
+        50% { transform: translateY(-18px) translateX(10px); }
+        100% { transform: translateY(0px) translateX(0px); }
+    }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .container {
+        position: relative;
+        z-index: 2;
+        max-width: 1220px;
+        margin: 36px auto;
+        padding: 20px;
+    }
+
+    .hero-card,
+    .card {
+        background: var(--card);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow);
+        padding: 28px;
+        border: 1px solid var(--border);
+        animation: fadeUp 0.8s ease;
+    }
+
+    .hero-card {
+        margin-bottom: 22px;
+        background: linear-gradient(180deg, #ffffff 0%, #fcf8ff 100%);
+    }
+
+    h1, h2, h3 {
+        font-family: 'Poppins', sans-serif;
+    }
+
+    h1 {
+        margin: 0 0 8px 0;
+        font-size: 2.7rem;
+        line-height: 1.05;
+        letter-spacing: -1px;
+    }
+
+    h2 {
+        margin: 0 0 14px 0;
+        font-size: 1.4rem;
+        color: var(--primary-purple-dark);
+    }
+
+    h3 {
+        margin: 0 0 10px 0;
+    }
+
+    .accent-purple {
+        color: var(--primary-purple);
+    }
+
+    .accent-green {
+        color: var(--accent-indigo);
+    }
+
+    .intro {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.8;
+        max-width: 850px;
+    }
+
+    .top-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 22px;
+    }
+
+    .stat-card {
+        background: #ffffff;
+        border-radius: var(--radius-lg);
+        padding: 20px;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-soft);
+        transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .stat-card:hover,
+    .mini-card:hover,
+    .rec-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 28px rgba(90, 24, 154, 0.10);
+        border-color: var(--border-strong);
+    }
+
+    .stat-card h3 {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        color: var(--muted);
+        font-weight: 700;
+    }
+
+    .stat-card p {
+        margin: 0;
+        font-size: 1.28rem;
+        font-weight: 800;
+        line-height: 1.4;
+        color: #1f2937;
+    }
+
+    .status-card {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .status-card::after {
+        content: "";
+        position: absolute;
+        inset: auto 0 0 0;
+        height: 5px;
+        border-radius: 0 0 22px 22px;
+    }
+
+    .status-card.healthy {
+        background: linear-gradient(180deg, #ffffff 0%, var(--green-soft) 100%);
+        border-color: #ccebd8;
+    }
+
+    .status-card.healthy p {
+        color: var(--green);
+    }
+
+    .status-card.healthy::after {
+        background: var(--green);
+    }
+
+    .status-card.attention {
+        background: linear-gradient(180deg, #ffffff 0%, var(--amber-soft) 100%);
+        border-color: #f1d5b3;
+    }
+
+    .status-card.attention p {
+        color: var(--amber);
+    }
+
+    .status-card.attention::after {
+        background: var(--amber);
+    }
+
+    .status-card.critical {
+        background: linear-gradient(180deg, #ffffff 0%, var(--red-soft) 100%);
+        border-color: #f3c5cb;
+    }
+
+    .status-card.critical p {
+        color: var(--red);
+    }
+
+    .status-card.critical::after {
+        background: var(--red);
+    }
+
+    .transparency-card {
+        margin-bottom: 22px;
+        background: linear-gradient(180deg, var(--purple-bg) 0%, var(--blue-soft) 100%);
+    }
+
+    .model-pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 14px;
+    }
+
+    .model-pill {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-weight: 800;
+        font-size: 0.95rem;
+        box-shadow: 0 6px 16px rgba(90, 24, 154, 0.05);
+    }
+
+    .pill-needs {
+        color: var(--primary-purple-dark);
+    }
+
+    .pill-wants {
+        color: var(--amber);
+    }
+
+    .pill-savings {
+        color: var(--green);
+    }
+
+    .small-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 22px;
+    }
+
+    .mini-card {
+        background: #ffffff;
+        border-radius: var(--radius-lg);
+        padding: 18px;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-soft);
+        transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .mini-card h3 {
+        margin: 0 0 8px 0;
+        font-size: 1rem;
+        color: var(--muted);
+    }
+
+    .mini-card p {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: #111827;
+    }
+
+    .section-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
+        margin-bottom: 22px;
+    }
+
+    .chart-wrap {
+        height: 320px;
+        background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 14px;
+    }
+
+    .highlights p {
+        margin: 0 0 12px 0;
+        line-height: 1.8;
+        color: #374151;
+        font-size: 0.98rem;
+    }
+
+    .highlights strong {
+        color: var(--primary-purple-dark);
+    }
+
+    .recommendation-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 12px;
+    }
+
+    .rec-item {
+        padding: 16px 18px;
+        border-radius: var(--radius-md);
+        line-height: 1.75;
+        background: linear-gradient(180deg, #ffffff 0%, #fcfbff 100%);
+        border: 1px solid var(--border);
+        border-left: 5px solid var(--primary-purple);
+        box-shadow: var(--shadow-soft);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        color: #374151;
+    }
+
+    .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .btn {
+        text-decoration: none;
+        padding: 14px 22px;
+        border-radius: 14px;
+        font-weight: 800;
+        display: inline-block;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary-purple), var(--accent-indigo));
+        color: white;
+        box-shadow: 0 14px 28px rgba(90, 24, 154, 0.22);
+    }
+
+    .btn-primary:hover {
+        box-shadow: 0 18px 34px rgba(90, 24, 154, 0.28);
+    }
+
+    .btn-secondary {
+        background: #f3e8ff;
+        color: var(--primary-purple-dark);
+        border: 1px solid #dcc2ff;
+    }
+
+    .btn-secondary:hover {
+        box-shadow: 0 10px 18px rgba(90, 24, 154, 0.10);
+    }
+
+    .footer {
+        margin-top: 40px;
+        padding: 20px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #6b7280;
+    }
+
+    .footer p {
+        margin: 0;
+    }
+
+    @media (max-width: 1020px) {
+        .top-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .section-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .small-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .container {
+            margin: 24px auto;
+            padding: 14px;
+        }
+
+        .top-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-card,
+        .card {
+            padding: 22px;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.22rem;
+        }
+
+        .stat-card p,
+        .mini-card p {
+            font-size: 1.12rem;
+        }
+
+        .chart-wrap {
+            height: 280px;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+
+    <div class="container">
+        <section class="hero-card">
+            <h1>Your <span class="accent-purple">Financial</span> <span class="accent-green">Report</span></h1>
+            <p class="intro">
+                PocketBalance AI has analyzed the submitted budget and generated a financial health profile, spending distribution, and recommendations.
+            </p>
+        </section>
+
+        <section class="top-grid">
+            <div class="stat-card status-card
+                {% if health_status == 'Healthy' %}healthy
+                {% elif health_status == 'Needs Attention' %}attention
+                {% else %}critical{% endif %}">
+                <h3>Health Status</h3>
+                <p>{{ health_status }}</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Income Profile</h3>
+                <p>{{ income_band }}</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Total Expenses</h3>
+                <p>R{{ "{:,.2f}".format(total_expenses) }}</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Top Spending Pressure</h3>
+                <p>{{ top_category }}</p>
+            </div>
+        </section>
+
+        <section class="card transparency-card">
+            <h2>Budget Model Transparency</h2>
+            <p class="intro">
+                Your budget was evaluated using the <strong>{{ income_band }}</strong> model so the recommendation process stays visible and trustworthy.
+            </p>
+
+            <div class="model-pill-row">
+                <div class="model-pill pill-needs">Needs {{ needs_model }}%</div>
+                <div class="model-pill pill-wants">Wants {{ wants_model }}%</div>
+                <div class="model-pill pill-savings">Savings {{ savings_model }}%</div>
+            </div>
+        </section>
+
+        <section class="small-grid">
+            <div class="mini-card">
+                <h3>Fixed Costs</h3>
+                <p>R{{ "{:,.2f}".format(total_fixed) }}</p>
+            </div>
+
+            <div class="mini-card">
+                <h3>Variable Costs</h3>
+                <p>R{{ "{:,.2f}".format(total_variable) }}</p>
+            </div>
+
+            <div class="mini-card">
+                <h3>Savings</h3>
+                <p>R{{ "{:,.2f}".format(total_savings) }}</p>
+            </div>
+        </section>
+
+        <section class="section-grid">
+            <div class="card">
+                <h2>Spending Distribution</h2>
+                <div class="chart-wrap">
+                    <canvas id="budgetChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card highlights">
+                <h2>Key Highlights</h2>
+                <p><strong>Monthly Income:</strong> R{{ "{:,.2f}".format(income) }}</p>
+                <p><strong>Highest Variable Expense:</strong> {{ top_category }} (R{{ "{:,.2f}".format(top_amount) }})</p>
+                <p><strong>Needs:</strong> {{ needs_percent }}%</p>
+                <p><strong>Wants:</strong> {{ wants_percent }}%</p>
+                <p><strong>Savings:</strong> {{ savings_percent }}%</p>
+            </div>
+        </section>
+
+        <section class="card" style="margin-bottom: 22px;">
+            <h2>Budget Percentages</h2>
+            <div class="chart-wrap">
+                <canvas id="percentChart"></canvas>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Smart Insights & Recommendations</h2>
+            <p class="intro" style="margin-bottom: 16px;">
+                {{ summary_text }}
+            </p>
+            <ul class="recommendation-list">
+                {% for item in recommendations %}
+                    <li class="rec-item">{{ item }}</li>
+                {% endfor %}
+            </ul>
+
+            <div class="button-row">
+                <a href="/analyze" class="btn btn-primary">Create Another Analysis</a>
+                <a href="/" class="btn btn-secondary">Back Home</a>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const budgetCanvas = document.getElementById("budgetChart");
+            const percentCanvas = document.getElementById("percentChart");
+
+            if (!budgetCanvas || !percentCanvas || typeof Chart === "undefined") {
+                console.error("Charts could not be initialized.");
+                return;
+            }
+
+            const totalFixed = {{ total_fixed|default(0)|tojson }};
+            const totalVariable = {{ total_variable|default(0)|tojson }};
+            const totalSavings = {{ total_savings|default(0)|tojson }};
+
+            const needsPercent = {{ needs_percent|default(0)|tojson }};
+            const wantsPercent = {{ wants_percent|default(0)|tojson }};
+            const savingsPercent = {{ savings_percent|default(0)|tojson }};
+
+            new Chart(budgetCanvas.getContext("2d"), {
+                type: "bar",
+                data: {
+                    labels: ["Fixed Costs", "Variable Costs", "Savings"],
+                    datasets: [{
+                        label: "Amount in Rands",
+                        data: [totalFixed, totalVariable, totalSavings],
+                        backgroundColor: ["#BE91BE", "#D8BAA7", "#519755"],
+                        borderRadius: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+
+            new Chart(percentCanvas.getContext("2d"), {
+                type: "doughnut",
+                data: {
+                    labels: ["Needs", "Wants", "Savings"],
+                    datasets: [{
+                        data: [needsPercent, wantsPercent, savingsPercent],
+                        backgroundColor: ["#BE91BE", "#D8BAA7", "#519755"]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        });
+    </script>
+    <footer class="footer">
+        <p>© 2026 Zipho Renene • Built with Python, Flask & Data-Driven Logic</p>
+    </footer>
+</body>
+</html>
